@@ -2,6 +2,7 @@ package kata5;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -49,6 +50,18 @@ public class DataBase {
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
             System.out.println("Tabla creada");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e){
+            System.out.println("La conexión no ha sido establecida, primero conecte con la base de datos");
+        }
+    }
+    
+    public void insertEmail(String email){
+        String sql = "INSERT INTO MAIL(mail) VALUES(?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (NullPointerException e){
